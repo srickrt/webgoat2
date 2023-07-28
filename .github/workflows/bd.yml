@@ -1,0 +1,26 @@
+name: BlackDuck Java Example
+on: push 
+  # pull_request:
+   #  branches:
+    #   - '2.0'
+env:
+  JAVA_VERSION: 11
+jobs:
+  example_job:
+    name: BlackDuck Java Example Job
+    runs-on: ubuntu-latest 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3 
+
+    - name: Optionally Set up JDK 
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11'   
+
+    #run detect
+    - name: Synopsys Detect
+      run:
+        curl -s -L https://detect.synopsys.com/detect7.sh > detect7.sh;
+        bash detect7.sh --blackduck.url="${{  secrets.BLACKDUCK_URL }}" --blackduck.api.token="${{ secrets.BLACKDUCK_API }}" 
+        --detect.project.name=PROJECtest
